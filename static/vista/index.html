@@ -38,7 +38,7 @@
 					<div class="row table-wrapper-scroll-y my-custom-scrollbar">
 						<script type="text/javascript">
 
-							let cliente = new Colyseus.Client('ws://localhost:8888');
+							let cliente = new Colyseus.Client('ws://localhost:3000');
 
 							client.create("battle", {/* options */}).then(room => {
 							  console.log("joined successfully", room);
