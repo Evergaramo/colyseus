@@ -1,0 +1,95 @@
+<!doctype html>
+
+<html>
+<head>
+	<title>Juego</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+
+	<link href="bootstrap-4.1.3/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<link href="css/login.css" rel="stylesheet">
+	<link href="css/table.css" rel="stylesheet">
+	<link href="css/particles.css" rel="stylesheet">
+	<script src="bootstrap-4.1.3/js/bootstrap.min.js"></script>
+	<script src="jquery/jquery-3.4.1.min.js"></script>
+	<script src="js/menu.js"></script>
+	<script src="js/particles.js"></script>
+	<script src="js/colyseus.js"></script>
+	<!------ Include the above in your HEAD tag ---------->
+	
+	
+	
+</head>
+
+<body>
+	<div id="particles-js"></div>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+	<div class="container">
+		<div class="card card-login mx-auto text-center bg-dark">
+			<div class="card-body">
+				<div id="login">
+					<div class="card-header mx-auto bg-dark">
+						<h1>Bienvenido</h1>
+					</div>
+					<div class="logo form-group">
+						<img src="icons/happy.svg" class="icon"/>
+					</div>
+
+					<div class="row table-wrapper-scroll-y my-custom-scrollbar">
+						<script type="text/javascript">
+
+							let cliente = new Colyseus.Client('ws://localhost:8888');
+
+							client.create("battle", {/* options */}).then(room => {
+							  console.log("joined successfully", room);
+							}).catch(e => {
+							  console.error("join error", e);
+							});
+
+							var html_table = '<table id="dtBasicExample" class="table table-sm table-striped table-hover table-bordered table-wrapper-scroll-y my-custom-scrollbar" cellspacing="0" width="100%">'+
+							'<thead>'+
+								'<tr>'+
+									'<th class="th-sm">Nombre'+
+									'</th>'+
+									'<th class="th-sm">Jugadores'+
+									'</th>'+
+									'<th class="th-sm">Ping'+
+									'</th>'+
+								'</tr>'+
+							'</thead>'+
+							'<tbody>';
+
+							cliente.getAvailableRooms("battle").then(rooms => {
+							  rooms.forEach((room) => {
+							  	html_table += '<tr>'+
+									'<td>'+room.roomId+'</td>'+
+									'<td>'+room.clients+'/'+room.maxClients+'</td>'+
+									'<td>'+room.metadata+'</td>'+
+								'</tr>';
+							  });
+							}).catch(e => {
+							  console.error(e);
+							});
+
+							html_table += '<tbody>'+
+								'<tfoot>'+
+									'<tr>'+
+										'<th>Nombre'+
+										'</th>'+
+										'<th>Jugadores'+
+										'</th>'+
+										'<th>Ping'+
+										'</th>'+
+									'</tr>'+
+								'</tfoot>'+
+							'</table>;'
+
+							document.write(html_table);
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
